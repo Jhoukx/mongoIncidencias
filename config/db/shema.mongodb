@@ -8,7 +8,7 @@ db.autoincrement.insertMany([
 ]);
 
 function siguienteId(coleccion) {
-    const sequenceDocument = db.counters.findOneAndUpdate(
+    const sequenceDocument = db.autoincrement.findOneAndUpdate(
         { id: `${coleccion}Id` },
         { $inc: { sequence_value: 1 } },
         { returnDocument: "after" }
