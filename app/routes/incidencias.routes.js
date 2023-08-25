@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { postIncidencias,getIncidencias } from "../controllers/incidencias.controller.js";
+import { postIncidencias,getIncidencias, putIncidencias } from "../controllers/incidencias.controller.js";
 import { body } from 'express-validator';
 
 const appIncidencias = Router();
@@ -13,6 +13,7 @@ appIncidencias.post('/', [
         .isString().withMessage('El dato debe ser de tipo string')
         .matches(/^[a-z A-Z]+$/).withMessage('Solo acepta letras')
 ], postIncidencias);
+appIncidencias.put("/", putIncidencias);
 
 
 export default appIncidencias
