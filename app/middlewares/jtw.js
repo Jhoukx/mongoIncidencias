@@ -1,6 +1,7 @@
 import {con} from '../../config/connection/atlas.js'
 import { SignJWT,jwtVerify } from 'jose'
 import dotenv from 'dotenv';
+import { ObjectId } from 'mongodb';
 dotenv.config();
 
 const db = await con();
@@ -22,20 +23,21 @@ const crearToken = async (req, res) => {
 }
 
 const validateToken = async (req, res, next) => {
-    if (!authorization) return res.status(400).send({ status: 400, token: "Token not sent  🧐" });
     try {
         const { authorization } = req.headers;
+        if (!authorization) return res.status(400).send({ status: 400, token: "Token not sent  🧐" });
         const jwtData = await jwtVerify(
             authorization,
             encoder.encode(process.env.JWT_PASSWORD)
         );
-        // Recibir informacion desde la base de datos 
-        let result = await db.collection('usuario').findOne({ _id: new ObjectId(jwtData.payload.id) })
+        // Recibir informacion desde la base de datos
+        let result = await db.collection('usuario').findOne({ _id: new ObjectId(jwtData.payload._id) })
+        console.log(result);
         //Comparacion del endpoint permitido
-        if (!(req.baseUrl in result.permisos)) return res.json({ status: 404, message: 'The endpoint is not allowed' })
+        if (!(req.baseUrl in result.permisos)) return res.status(404).json({ status: 404, message: 'The endpoint is not allowed' })
         let versiones = result.permisos[req.baseUrl];
         //comparacion de versiones permitidas
-        if (!(versiones.includes(req.headers["accept-version"]))) return res.json({ status: 404, message: 'The version is not allowed' })
+        if (!(versiones.includes(req.headers["accept-version"]))) return res.status(404).json({ status: 404, message: 'The version is not allowed' })
         //const allowedMethods = result.permisos[req.baseUrl];
         //const currentMethod = req.method.toLowerCase();
         //if (!allowedMethods.includes(currentMethod)) return res.json({ status: 404, message: 'The method is not allowed' });
