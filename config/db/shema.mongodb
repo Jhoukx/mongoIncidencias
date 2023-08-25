@@ -3,8 +3,8 @@ db.createCollection("autoincrement");
 db.autoincrement.insertMany([
     { id: "incidenciasId", sequence_value: 0 },
     { id: "trainersId", sequence_value: 0 },
-    { id: "areasId", sequence_value: 0 },
-    { id: "rolesId", sequence_value: 0 }
+    { id: "areasId", sequence_value: 0 }
+    //{ id: "rolesId", sequence_value: 0 }
 ]);
 
 function siguienteId(coleccion) {
@@ -16,12 +16,12 @@ function siguienteId(coleccion) {
     return sequenceDocument.sequence_value;
 }
 
-db.createCollection("roles");
-db.roles.insertMany([
-    { id: Number(siguienteId("roles")), name: "admin", access: { "/incidencia":{'1.0.0':['GET']}, "/trainer":{}, "/area":{} } ["/incidencia", "/trainer", "/area"] },
-    { id: Number(siguienteId("roles")), name: "trainer", access: ["/incidencia"] },
-    { id: Number(siguienteId("roles")), name: "camper", access: ["/incidencia"] }
-]);
+// db.createCollection("roles");
+// db.roles.insertMany([
+//     { id: Number(siguienteId("roles")), name: "admin", access: { "/incidencias":{'1.0.0':['GET']}, "/trainer":{}, "/area":{} } ["/incidencia", "/trainer", "/area"] },
+//     { id: Number(siguienteId("roles")), name: "trainer", access: ["/incidencias"] },
+//     { id: Number(siguienteId("roles")), name: "camper", access: ["/incidencias"] }
+// ]);
 
 db.createCollection("areas", {
     capped: true,
@@ -245,13 +245,13 @@ db.incidencias.insertMany([
     }
 ]);
 
-use("db_campus_incidencias");
+
 db.createCollection("usuario", {
     validator: {
         $jsonSchema: {
             bsonType: 'object',
             additionalProperties: false,
-            required: ['cc', 'nombre', 'rol'],
+            required: ['cc', 'nombre'],
             properties: {
                 _id: {
                     bsonType: 'objectId',
@@ -264,13 +264,6 @@ db.createCollection("usuario", {
                     bsonType: 'string',
                     description: 'El nombre es obligatorio y solo resive letras',
                     pattern: "^[a-zA-Z ]+$"
-                },
-                rol: {
-                    bsonType: 'array',
-                    description: "El rol es obligatorio",
-                    items: {
-                        bsonType: "int",
-                    }
                 },
                 permisos: {
                     bsonType: 'object',
@@ -285,27 +278,27 @@ db.createCollection("usuario", {
                         }
                     }
                 }
-            },
+            }
         }
     }
 });
+
+use("db_campus_incidencias");
 db.usuario.insertMany([
     {
         cc: 123456789,
         nombre: "admin",
-        rol: [1],
         permisos: {
-            "/trainer": ["1.0.0", "2.2.1"],
-            "/area": ["1.0.0", "2.2.1"],
-            "/incidencia": ["1.0.0", "2.2.1"]
+            "/trainers": ["1.0.0", "2.2.1"],
+            "/areas": ["1.0.0", "2.2.1"],
+            "/incidencias": ["1.0.0", "2.2.1"]
         }
     },
     {
         cc: 456789123,
         nombre: "John",
-        rol: [2],
         permisos: {
-            "/trainer": ["1.0.0", "2.2.1"]
+            "/trainers": ["1.0.0", "2.2.1"]
         }
     }
 ]);
