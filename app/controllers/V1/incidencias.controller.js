@@ -5,6 +5,8 @@ const incidencias = db.collection('incidencias');
 
 const postIncidencias = async(req, res) => {
     try {
+        if (!req.rateLimit) return
+        console.log(req.rateLimit);
         let { id,fecha_reporte, ...data} = req.body;
         
         id = await siguienteId('incidencias');
@@ -19,6 +21,9 @@ const postIncidencias = async(req, res) => {
 }
 const getIncidencias = async (req, res) => {
     try {
+        if(!req.rateLimit)return
+        console.log(req.rateLimit);
+        
         const result = await incidencias.find().toArray();
         res.status(200).json(result);
     } catch (error) {
@@ -27,6 +32,8 @@ const getIncidencias = async (req, res) => {
 }
 const putIncidencias = async (req, res) => {
     try {
+        if (!req.rateLimit) return
+        console.log(req.rateLimit);
         let { id, fecha_reporte, ...data } = req.body;
         const dateFecha = new Date(fecha_reporte)
         await incidencias.updateOne({ id }, { $set: { fecha_reporte: dateFecha ,...data} });
