@@ -1,6 +1,6 @@
+import routesVersioning from 'express-routes-versioning';
 import { con } from '../../config/connection/atlas.js';
-import { siguienteId } from '../functions/autoincrement.js';
-
+import { siguienteId } from '../helpers/autoincrement.js';
 const db = await con();
 const incidencias = db.collection('incidencias');
 
@@ -18,5 +18,13 @@ const postIncidencias = async(req, res) => {
     }
     res.send('Post incidencias :D')
 }
+const getIncidencias = async (req, res) => {
+    try {
+        const result = await incidencias.find().toArray();
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({status:500,message:error.message})
+    }
+}
 
-export { postIncidencias }
+export { postIncidencias,getIncidencias }
