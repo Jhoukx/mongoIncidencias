@@ -242,6 +242,16 @@ db.incidencias.insertMany([
         severidad: "moderada",
         area: 1,
         trainer: 2
+    },
+    {
+        id: Number(siguienteId("incidencias")),
+        categoria: "Software",
+        tipo: "NVM",
+        descripcion: "Nvm no está instaladoooo",
+        fecha_reporte: ISODate("2023-08-23"),
+        severidad: "moderada",
+        area: 2,
+        trainer: 1
     }
 ]);
 
