@@ -2,7 +2,7 @@ import { con } from '../../../config/connection/atlas.js'
 const db = await con();
 const areas = db.collection('areas');
 
-const getAreas = async (re, res) => {
+const getAreas = async (req, res) => {
     try {
         const result = await areas.find().toArray()
         res.json(result)
