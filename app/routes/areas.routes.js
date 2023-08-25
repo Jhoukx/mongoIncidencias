@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAreas } from "../controllers/areas.controller.js";
+import { getAreas } from "../controllers/V1/areas.controller.js";
 
 const appAreas = Router();
 
