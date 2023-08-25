@@ -302,7 +302,7 @@ db.usuario.insertMany([
     },
     {
         cc: 456789123,
-        nombre: "Ivan",
+        nombre: "John",
         rol: [2],
         permisos: {
             "/trainer": ["1.0.0", "2.2.1"]
