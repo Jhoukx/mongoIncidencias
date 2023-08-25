@@ -4,11 +4,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const db = await con();
-const crearToken = async (req, res, next) => {
+const encoder = new TextEncoder();
+const crearToken = async (req, res) => {
     try {
         const result = await db.collection('usuario').findOne(req.params);
         const id = result._id.toString();
-        const encoder = new TextEncoder();
         const jwtconstructor = await new SignJWT({ _id: id });
         const jwt = await jwtconstructor
             .setProtectedHeader({ alg: "HS256", typ: "JWT" })
@@ -21,4 +21,28 @@ const crearToken = async (req, res, next) => {
     }
 }
 
-export {crearToken}
+const validateToken = async (req, res, next) => {
+    if (!authorization) return res.status(400).send({ status: 400, token: "Token not sent  🧐" });
+    try {
+        const { authorization } = req.headers;
+        const jwtData = await jwtVerify(
+            authorization,
+            encoder.encode(process.env.JWT_PASSWORD)
+        );
+        // Recibir informacion desde la base de datos 
+        let result = await db.collection('usuario').findOne({ _id: new ObjectId(jwtData.payload.id) })
+        //Comparacion del endpoint permitido
+        if (!(req.baseUrl in result.permisos)) return res.json({ status: 404, message: 'The endpoint is not allowed' })
+        let versiones = result.permisos[req.baseUrl];
+        //comparacion de versiones permitidas
+        if (!(versiones.includes(req.headers["accept-version"]))) return res.json({ status: 404, message: 'The version is not allowed' })
+        //const allowedMethods = result.permisos[req.baseUrl];
+        //const currentMethod = req.method.toLowerCase();
+        //if (!allowedMethods.includes(currentMethod)) return res.json({ status: 404, message: 'The method is not allowed' });
+        next();
+    } catch (error) {
+        
+    }
+}
+
+export { crearToken, validateToken }
