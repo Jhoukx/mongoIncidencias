@@ -18,7 +18,7 @@ function siguienteId(coleccion) {
 
 db.createCollection("roles");
 db.roles.insertMany([
-    { id: Number(siguienteId("roles")), name: "admin", access: ["/incidencia", "/trainer", "/area"] },
+    { id: Number(siguienteId("roles")), name: "admin", access: { "/incidencia":{'1.0.0':['GET']}, "/trainer":{}, "/area":{} } ["/incidencia", "/trainer", "/area"] },
     { id: Number(siguienteId("roles")), name: "trainer", access: ["/incidencia"] },
     { id: Number(siguienteId("roles")), name: "camper", access: ["/incidencia"] }
 ]);
