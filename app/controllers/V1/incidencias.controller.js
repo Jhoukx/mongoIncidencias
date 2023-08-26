@@ -50,5 +50,17 @@ const putIncidencias = async (req, res) => {
         res.status(404).json({status:404,message:"Couldnt find that 'incidencia' :C"})
     }
 }
+const delIncidencias = async(req,res) => {
+    try {
+        if (!req.rateLimit) return
+        console.log(req.rateLimit);
 
-export { postIncidencias,getIncidencias,putIncidencias }
+        console.log(req.params.id);
+        await incidencias.deleteOne({id:Number(req.params.id)});
+        res.status(200).json({status:200,message:'deleted successfully 🙃'});
+    } catch (error) {
+        res.status(404).json({status:404,message:"Couldn't delete that 'incidencia'"})
+    }
+}
+
+export { postIncidencias,getIncidencias,putIncidencias,delIncidencias }
