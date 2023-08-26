@@ -27,8 +27,10 @@ const postAreas = async (req, res) => {
         // Res consult...
         let { id, ...data } = req.body
         id = await siguienteId('areas');
+        console.log({ id: id,  ...data });
 
         await areas.insertOne({ id: id,  ...data });
+        res.status(201).json({status:201,message:"'area' added successfully 😀"})
     } catch (error) {
         res.status(422).json({ status: 422, message: error.message })
     }
