@@ -1,12 +1,20 @@
 import { con } from '../../../config/connection/atlas.js';
 import { siguienteId } from '../../helpers/autoincrement.js';
+import { validationResult } from 'express-validator';
 const db = await con();
 const incidencias = db.collection('incidencias');
 
 const postIncidencias = async(req, res) => {
     try {
+        // Rate limit
         if (!req.rateLimit) return
         console.log(req.rateLimit);
+
+        // Validation
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) return res.status(422).send(errors);
+
+        //Rest consult...
         let { id,fecha_reporte, ...data} = req.body;
         
         id = await siguienteId('incidencias');
