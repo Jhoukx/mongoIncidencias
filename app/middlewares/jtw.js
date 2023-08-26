@@ -32,7 +32,7 @@ const validateToken = async (req, res, next) => {
         );
         // Recibir informacion desde la base de datos
         let result = await db.collection('usuario').findOne({ _id: new ObjectId(jwtData.payload._id) })
-        console.log(result);
+        console.log(result.permisos);
         //Comparacion del endpoint permitido
         if (!(req.baseUrl in result.permisos)) return res.status(404).json({ status: 404, message: 'The endpoint is not allowed' })
         let versiones = result.permisos[req.baseUrl];
