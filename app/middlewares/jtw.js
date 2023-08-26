@@ -34,10 +34,10 @@ const validateToken = async (req, res, next) => {
         let result = await db.collection('usuario').findOne({ _id: new ObjectId(jwtData.payload._id) })
         console.log(result.permisos);
         //Comparacion del endpoint permitido
-        if (!(req.baseUrl in result.permisos)) return res.status(404).json({ status: 404, message: 'The endpoint is not allowed' })
+        if (!(req.baseUrl in result.permisos)) return res.status(401).json({ status: 401, message: 'The endpoint is not allowed' })
         let versiones = result.permisos[req.baseUrl];
         //comparacion de versiones permitidas
-        if (!(versiones.includes(req.headers["accept-version"]))) return res.status(404).json({ status: 404, message: 'The version is not allowed' })
+        if (!(versiones.includes(req.headers["accept-version"]))) return res.status(401).json({ status: 401, message: 'The version is not allowed' })
         //const allowedMethods = result.permisos[req.baseUrl];
         //const currentMethod = req.method.toLowerCase();
         //if (!allowedMethods.includes(currentMethod)) return res.json({ status: 404, message: 'The method is not allowed' });
