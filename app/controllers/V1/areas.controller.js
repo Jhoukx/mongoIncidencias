@@ -4,6 +4,8 @@ const areas = db.collection('areas');
 
 const getAreas = async (req, res) => {
     try {
+        if (!req.rateLimit) return
+        console.log(req.rateLimit);
         const result = await areas.find().toArray()
         res.json(result)
     } catch (error) {
