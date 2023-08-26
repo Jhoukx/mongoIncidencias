@@ -261,14 +261,10 @@ db.createCollection("usuario", {
         $jsonSchema: {
             bsonType: 'object',
             additionalProperties: false,
-            required: ['cc', 'nombre'],
+            required: ['nombre','permisos'],
             properties: {
                 _id: {
                     bsonType: 'objectId',
-                },
-                cc: {
-                    bsonType: "int",
-                    description: "La cedula es obligatorio y tiene que se de tipo numerico"
                 },
                 nombre: {
                     bsonType: 'string',
@@ -296,7 +292,6 @@ db.createCollection("usuario", {
 use("db_campus_incidencias");
 db.usuario.insertMany([
     {
-        cc: 123456789,
         nombre: "admin",
         permisos: {
             "/trainers": ["1.0.0", "2.2.1"],
@@ -305,10 +300,15 @@ db.usuario.insertMany([
         }
     },
     {
-        cc: 456789123,
-        nombre: "John",
+        nombre: "incidencias",
         permisos: {
-            "/trainers": ["1.0.0", "2.2.1"]
+            "/incidencias": ["1.0.0", "2.2.1"]
+        }
+    },
+    {
+        nombre: "areas",
+        permisos: {
+            "/areas": ["1.0.0"]
         }
     }
 ]);
