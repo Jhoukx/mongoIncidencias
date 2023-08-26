@@ -19,7 +19,9 @@ appIncidencias.get('/',version({
 appIncidencias.post('/', incidenciaDTO, version({
     "1.0.0": postIncidencias
 }));
-appIncidencias.put("/", putIncidencias);
+appIncidencias.put("/", incidenciaDTO, version({
+    "1.0.0": putIncidencias
+}));
 
 
 export default appIncidencias
