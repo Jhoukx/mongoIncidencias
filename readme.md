@@ -115,3 +115,32 @@ Debe salir un mensaje de aprobación como este:
 Para el método GET solo se implementó una versión la `1.0.0` y esta devuelve todos los datos de la colección áreas. Ejemplo:
 
 <img src="./img/getAreas.png" alt="putIncidencias" style="zoom:80%;"/>
+
+#### Post
+
+Para el método POST **Todos ** los parámetros son obligatorios, por lo que respetando el tipo de dato,  los datos de entrada deben estar similar al ejemplo. Ejemplo:
+
+**Datos obligatorios:**
+
+```json
+{
+  "tipo": "training",
+  "nombre": "Area de Entrenamiento cuatro",
+  "computadores": 30,
+  "teclados": 30,
+  "mouse": 30,
+  "diademas": 20
+}
+```
+
+Mensaje de aprobación:
+
+<img src="./img/postAreas.png" alt="putIncidencias" style="zoom:80%;"/>
+
+## Contacto
+
+---
+
+✉️ Correo Electrónico : jegonzalezesparragoza@gmail.com
+
+**📱** Teléfono: 3137787921
