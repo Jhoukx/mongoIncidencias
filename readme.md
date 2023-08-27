@@ -37,14 +37,81 @@ npm i -E
 
 ### Creación del token
 
-Para las peticiones del proyecto se utiliza JWT para la validación de acceso así que es necesario utilizarla por cada petición. Para crear un token hay que  remplazar por el campo {acceso} el acceso que desea tener para esta peticion , siendo estos roles 'admin','incidencias' y 'areas'. 
+Para las peticiones del proyecto se utiliza JWT para la validación de acceso así que es necesario utilizarla por cada petición. Para crear un token hay que  remplazar por el campo {acceso} el acceso que desea tener para esta petición , siendo estos roles 'admin','incidencias' y 'areas'. El admin tiene accesso a todos los endpoints y todas las versiones, el resto de colecciones tiene acceso solo a las versiones de ellas y a su propio endpoint.
 
-sEJemplo:
+Ejemplo:
 
 ```http
 http://127.0.0.1:3312/token/admin
 ```
 
+## Peticiones
 
+### Headers
 
-### 
+Para realizar peticiones es necesario enviar el token y la versión a la que se desea utilizar, a continuación un ejemplo del encabezado que se debe enviar:
+
+<img src="./img/headers.png" alt="crearToken" style="zoom:80%;"/>
+
+### /Incidencias
+
+#### Get
+
+Para el método GET se encuentran dos versiones con diferente resultados:
+
+- `1.0.0` : Traerá todo los datos de la colección incidencias
+- `2.2.1`: Traerá todas las incidencias que sean de la categoría software
+
+#### Post
+
+Para el método POST de incidencias **TODOS** los parámetros son obligatorios por lo que debe enviar un JSON similar a este, respetando su tipo de dato:
+```json
+  "categoria": "Hardware",
+  "tipo": "Typora",
+  "descripcion": "Typora caducó",
+  "fecha_reporte": "2023-10-23",
+  "severidad": "leve", //'leve', 'moderada', 'critica'
+  "area": 2,
+  "trainer": 1
+```
+
+Sí todo sale como se espera deberá salir un mensaje como este:
+
+<img src="./img/postIncidencias.png" alt="postIncidencias" style="zoom:80%;"/>
+
+#### Put
+
+Para realizar el PUT hace falta agregar el id de la incidencia a la que se desea actualizar, seguido de los parámetros con los cambios.Ejemplo:
+```json
+{
+  "id":3,
+  "categoria": "Software",
+  "tipo": "NVM",
+  "descripcion": "Se descargó node directamente",
+  "fecha_reporte": "2023-08-22",
+  "severidad": "moderada",
+  "area": 2
+}
+```
+
+Si todo salió bien debe salir este mensaje de aprobación por parte del servidor:
+
+<img src="./img/putIncidencias.png" alt="putIncidencias" style="zoom:80%;"/>
+#### Delete
+
+Para eliminar una incidencia solo hace falta conocer el id de ella y usarlo en la url. Ejemplo:
+
+```http
+http://127.0.0.1:3312/incidencias/<<id de la incidencia>>
+```
+Debe salir un mensaje de aprobación como este:
+
+<img src="./img/deleteIncidencias.png" alt="putIncidencias" style="zoom:80%;"/>
+
+### /areas
+
+#### Get
+
+Para el método GET solo se implementó una versión la `1.0.0` y esta devuelve todos los datos de la colección áreas. Ejemplo:
+
+<img src="./img/getAreas.png" alt="putIncidencias" style="zoom:80%;"/>
